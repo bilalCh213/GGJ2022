@@ -34,10 +34,8 @@ public class CardManager : MonoBehaviour
     int GetHoveredIndex()
     {
         for(int i = 0; i < transform.childCount; i++)
-        {
             if(transform.GetChild(i).GetComponent<Card>().Hovered)
                 return i;
-        }
         return -1;
     }
 
@@ -45,7 +43,7 @@ public class CardManager : MonoBehaviour
     {
         float lerp = lerpFactor * Time.deltaTime;
 
-        //Unselected Cards
+        //Processing Unselected Cards
         int hoveredIndex = GetHoveredIndex();
         for(int i = 0; i < transform.childCount; i++)
         {
@@ -54,17 +52,22 @@ public class CardManager : MonoBehaviour
             Transform tr = transform.GetChild(i);
             SpriteRenderer spRend = tr.GetComponent<SpriteRenderer>();
             spRend.sortingOrder = 1;
+
+            //Change in color helps in distinguishing cards
             spRend.color = Color.Lerp(spRend.color, Color.Lerp(startingColor, endColor, colorLerpPerCard * offsetIndex), lerp);
 
+            //Cards in the hand (bottom center group of cards) are placed in an cool looking and appropriate manner
             Vector3 position = tr.position;
             position.x = startingPosition.x - (xOffsetPerCard * transform.childCount / 2) + (xOffsetPerCard * i);
             position.y = startingPosition.y - ((hoveredIndex == -1 ? yOffsetPerCard : hoveredYOffset) * offsetIndex);
 
+            //A little rotation between cards look cool!
             Vector3 rotation = tr.rotation.eulerAngles;
             rotation.z = startingAngle + (angleOffsetPerCard * i);
 
             Vector3 scale = startingScale;
 
+            //When card is hovered...
             if(tr.GetComponent<Card>().Hovered)
             {
                 position.y += hoveredYOffset;
@@ -72,13 +75,18 @@ public class CardManager : MonoBehaviour
 
                 spRend.sortingOrder = 10;
 
+                //When hovered card is selected...
                 if(Input.GetMouseButtonDown(0) && selectedCard == null)
                 {
                     selectedCard = tr.gameObject;
+
+                    ////Card gets out of the Card Manager's transform so that, it is no longer included in the hand (bottom center group of cards)
                     selectedCard.transform.parent = null;
 
+                    //Each card got an selection indicator that is activated upon selection
                     selectedCard.transform.GetChild(0).gameObject.SetActive(true);
 
+                    //sideAPlacementArea is the player's placement area
                     sideAPlacementArea.SetActive(true);
 
                     spRend.sortingOrder = 10;
@@ -86,30 +94,39 @@ public class CardManager : MonoBehaviour
                 }
             }
 
+            //All three transform properties for all cards
             tr.position = Vector3.Lerp(tr.position, position, lerp);
             tr.rotation = Quaternion.Lerp(tr.rotation, Quaternion.Euler(rotation), lerp);
             tr.localScale = Vector3.Lerp(tr.localScale, scale, lerp);
         }
 
-        //Selected Card
+        //Processing Selected Card
         if(selectedCard != null)
         {
+            //When dragging the selected card...
             if(Input.GetMouseButton(0))
             {
-                selectedCard.transform.localScale = Vector3.Lerp(selectedCard.transform.localScale, selectedCardScale, lerp);
+                //...Keep updating the position to that of mouse position
                 selectedCard.transform.position = Vector3.Lerp(selectedCard.transform.position, Utility.MousePos() + selectedCardOffset, lerp);
                 selectedCard.transform.rotation = Quaternion.Lerp(selectedCard.transform.rotation, Quaternion.identity, lerp);
+                selectedCard.transform.localScale = Vector3.Lerp(selectedCard.transform.localScale, selectedCardScale, lerp);
             }
+            //When the selected card is no longer being dragged...
             else
             {
+                //take action at the mouse position and invert the screen colors
                 selectedCard.GetComponent<Card>().Action(Utility.MousePos());
                 ImageEffectController.instance.invert = !ImageEffectController.instance.invert;
 
+                //Card's selection indicator is disabled
                 selectedCard.transform.GetChild(0).gameObject.SetActive(false);
 
+                //Card is back to the hand (bottom center group of cards)
                 selectedCard.transform.parent = transform;
+
                 selectedCard = null;
 
+                //Placement area is disabled
                 sideAPlacementArea.SetActive(false);
             }
         }
