@@ -4,17 +4,16 @@ using UnityEngine;
 
 public class Card : MonoBehaviour
 {
+    [SerializeField] private GameObject objectToSpawn;
+
     private bool hovered = false;
 
     public bool Hovered { get { return hovered; } }
 
-    //void Start()
-    //{
-    //}
-
-    //void Update()
-    //{
-    //}
+    public void Action(Vector3 position)
+    {
+        Instantiate(objectToSpawn, position, Quaternion.identity);
+    }
 
     void OnMouseOver()
     {

@@ -17,10 +17,13 @@ public class CardManager : MonoBehaviour
     [SerializeField] private float angleOffsetPerCard = 5.0f;
     [Space]
     [SerializeField] private float hoveredYOffset = 0.0f;
-    [SerializeField] private Vector3 hoveredScale = Vector3.one;
+    [SerializeField] private Vector3 hoveredCardScale = Vector3.one;
     [Space]
     [SerializeField] private Vector3 selectedCardOffset = Vector3.zero;
-    [SerializeField] private Vector3 selectedScale = Vector3.one;
+    [SerializeField] private Vector3 selectedCardScale = Vector3.one;
+    [Space]
+    [SerializeField] private GameObject sideAPlacementArea;
+    [SerializeField] private GameObject sideBPlacementArea;
 
     private GameObject selectedCard = null;
 
@@ -28,47 +31,64 @@ public class CardManager : MonoBehaviour
     //{    
     //}
 
-    void Update()
+    int GetHoveredIndex()
     {
-        //Unselected Cards
         for(int i = 0; i < transform.childCount; i++)
         {
-            transform.GetChild(i).GetComponent<SpriteRenderer>().color = Color.Lerp(startingColor, endColor, colorLerpPerCard * i);
+            if(transform.GetChild(i).GetComponent<Card>().Hovered)
+                return i;
+        }
+        return -1;
+    }
 
-            Vector3 position = transform.GetChild(i).position;
+    void Update()
+    {
+        float lerp = lerpFactor * Time.deltaTime;
+
+        //Unselected Cards
+        int hoveredIndex = GetHoveredIndex();
+        for(int i = 0; i < transform.childCount; i++)
+        {
+            int offsetIndex = hoveredIndex == -1 ? Mathf.Abs(i - ((transform.childCount - 1) / 2)) : Mathf.Abs(i - hoveredIndex);
+
+            Transform tr = transform.GetChild(i);
+            SpriteRenderer spRend = tr.GetComponent<SpriteRenderer>();
+            spRend.sortingOrder = 1;
+            spRend.color = Color.Lerp(spRend.color, Color.Lerp(startingColor, endColor, colorLerpPerCard * offsetIndex), lerp);
+
+            Vector3 position = tr.position;
             position.x = startingPosition.x - (xOffsetPerCard * transform.childCount / 2) + (xOffsetPerCard * i);
-            position.y = startingPosition.y + (yOffsetPerCard * i);
+            position.y = startingPosition.y - ((hoveredIndex == -1 ? yOffsetPerCard : hoveredYOffset) * offsetIndex);
 
-            Vector3 rotation = transform.GetChild(i).rotation.eulerAngles;
+            Vector3 rotation = tr.rotation.eulerAngles;
             rotation.z = startingAngle + (angleOffsetPerCard * i);
 
-            transform.GetChild(i).position = Vector3.Lerp(transform.GetChild(i).position, position, lerpFactor * Time.deltaTime);
-            transform.GetChild(i).rotation = Quaternion.Lerp(transform.GetChild(i).rotation, Quaternion.Euler(rotation), lerpFactor * Time.deltaTime);
+            Vector3 scale = startingScale;
 
-            if(transform.GetChild(i).GetComponent<Card>().Hovered)
+            if(tr.GetComponent<Card>().Hovered)
             {
                 position.y += hoveredYOffset;
-                transform.GetChild(i).localScale = Vector3.Lerp(transform.GetChild(i).localScale, hoveredScale, lerpFactor * Time.deltaTime);
+                scale = hoveredCardScale;
 
-                transform.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 10;
+                spRend.sortingOrder = 10;
 
                 if(Input.GetMouseButtonDown(0) && selectedCard == null)
                 {
-                    selectedCard = transform.GetChild(i).gameObject;
+                    selectedCard = tr.gameObject;
                     selectedCard.transform.parent = null;
 
                     selectedCard.transform.GetChild(0).gameObject.SetActive(true);
 
-                    selectedCard.GetComponent<SpriteRenderer>().sortingOrder = 10;
-                    selectedCard.GetComponent<SpriteRenderer>().color = startingColor;
+                    sideAPlacementArea.SetActive(true);
+
+                    spRend.sortingOrder = 10;
+                    spRend.color = startingColor;
                 }
             }
-            else
-            {
-                transform.GetChild(i).localScale = Vector3.Lerp(transform.GetChild(i).localScale, startingScale, lerpFactor * Time.deltaTime);
 
-                transform.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 1;
-            }
+            tr.position = Vector3.Lerp(tr.position, position, lerp);
+            tr.rotation = Quaternion.Lerp(tr.rotation, Quaternion.Euler(rotation), lerp);
+            tr.localScale = Vector3.Lerp(tr.localScale, scale, lerp);
         }
 
         //Selected Card
@@ -76,16 +96,21 @@ public class CardManager : MonoBehaviour
         {
             if(Input.GetMouseButton(0))
             {
-                selectedCard.transform.localScale = Vector3.Lerp(selectedCard.transform.localScale, selectedScale, lerpFactor * Time.deltaTime);
-                selectedCard.transform.position = Vector3.Lerp(selectedCard.transform.position, Utility.MousePos() + selectedCardOffset, lerpFactor * Time.deltaTime);
-                selectedCard.transform.rotation = Quaternion.Lerp(selectedCard.transform.rotation, Quaternion.identity, lerpFactor * Time.deltaTime);
+                selectedCard.transform.localScale = Vector3.Lerp(selectedCard.transform.localScale, selectedCardScale, lerp);
+                selectedCard.transform.position = Vector3.Lerp(selectedCard.transform.position, Utility.MousePos() + selectedCardOffset, lerp);
+                selectedCard.transform.rotation = Quaternion.Lerp(selectedCard.transform.rotation, Quaternion.identity, lerp);
             }
             else
             {
+                selectedCard.GetComponent<Card>().Action(Utility.MousePos());
+                ImageEffectController.instance.invert = !ImageEffectController.instance.invert;
+
                 selectedCard.transform.GetChild(0).gameObject.SetActive(false);
 
                 selectedCard.transform.parent = transform;
                 selectedCard = null;
+
+                sideAPlacementArea.SetActive(false);
             }
         }
     }
