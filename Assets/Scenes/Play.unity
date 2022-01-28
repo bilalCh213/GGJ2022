@@ -330,6 +330,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   max: 1
   bar: {fileID: 1643937730}
+  destroyOnZero: 1
 --- !u!1 &192266616
 GameObject:
   m_ObjectHideFlags: 0
@@ -837,7 +838,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lerpFactor: 10
-  startingColor: {r: 1, g: 1, b: 1, a: 1}
+  startingColor: {r: 0, g: 0, b: 0, a: 0}
   startingPosition: {x: 1, y: -3.5, z: 0}
   startingAngle: 10
   startingScale: {x: 1, y: 1, z: 1}
@@ -1237,15 +1238,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1208311499}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 053001f18474b1c478570654fa7610e3, type: 3}
+  m_Script: {fileID: 11500000, guid: 658bfe8451531c546b86da63ab8cbbb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spawnObjects:
-  - {fileID: 649415774293477780, guid: 13c1d14e54ff9b2429c9a8529b66422f, type: 3}
-  minDelay: 1
+  - {fileID: 6719148424618451414, guid: 85bc25091d821044980fe61e705afaf0, type: 3}
+  minDelay: 2
   maxDelay: 4
-  minPosition: {x: -7, y: 0.3}
-  maxPosition: {x: -1.2, y: -3.3}
+  minSpawnPosition: {x: -7, y: 0.3}
+  maxSpawnPosition: {x: -1.2, y: -3.3}
+  objectTag: B
+  targetTag: BaseA
+  flipX: 1
+  properties:
+  - {fileID: 11400000, guid: d9e227e19a5f64f49963e3992377d20a, type: 2}
+  - {fileID: 11400000, guid: 1514e50bbb698c54bacb17a235ed4600, type: 2}
+  - {fileID: 11400000, guid: e018525a4eabd584795d875d2815092e, type: 2}
+  - {fileID: 11400000, guid: fdb18e7f693998742a0215d336a4120e, type: 2}
 --- !u!1 &1245793507
 GameObject:
   m_ObjectHideFlags: 0
@@ -1676,6 +1685,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   max: 1
   bar: {fileID: 332728148}
+  destroyOnZero: 1
 --- !u!1 &1479674765
 GameObject:
   m_ObjectHideFlags: 0

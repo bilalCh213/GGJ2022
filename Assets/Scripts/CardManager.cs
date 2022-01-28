@@ -50,11 +50,10 @@ public class CardManager : MonoBehaviour
             int offsetIndex = hoveredIndex == -1 ? Mathf.Abs(i - ((transform.childCount - 1) / 2)) : Mathf.Abs(i - hoveredIndex);
 
             Transform tr = transform.GetChild(i);
-            SpriteRenderer spRend = tr.GetComponent<SpriteRenderer>();
-            spRend.sortingOrder = 1;
+            SpriteRenderer blackOverlayRend = tr.GetChild(1).GetComponent<SpriteRenderer>();
 
             //Change in color helps in distinguishing cards
-            spRend.color = Color.Lerp(spRend.color, Color.Lerp(startingColor, endColor, colorLerpPerCard * offsetIndex), lerp);
+            blackOverlayRend.color = Color.Lerp(blackOverlayRend.color, Color.Lerp(startingColor, endColor, colorLerpPerCard * offsetIndex), lerp);
 
             //Cards in the hand (bottom center group of cards) are placed in an cool looking and appropriate manner
             Vector3 position = tr.position;
@@ -71,9 +70,8 @@ public class CardManager : MonoBehaviour
             if(tr.GetComponent<Card>().Hovered)
             {
                 position.y += hoveredYOffset;
+                position.z = -1.0f;
                 scale = hoveredCardScale;
-
-                spRend.sortingOrder = 10;
 
                 //When hovered card is selected...
                 if(Input.GetMouseButtonDown(0) && selectedCard == null)
@@ -89,9 +87,12 @@ public class CardManager : MonoBehaviour
                     //sideAPlacementArea is the player's placement area
                     sideAPlacementArea.SetActive(true);
 
-                    spRend.sortingOrder = 10;
-                    spRend.color = startingColor;
+                    blackOverlayRend.color = startingColor;
                 }
+            }
+            else
+            {
+                position.z = 0.0f;
             }
 
             //All three transform properties for all cards
@@ -118,12 +119,17 @@ public class CardManager : MonoBehaviour
                 selectedCard.GetComponent<Card>().Action(Utility.MousePos());
                 ImageEffectController.instance.invert = !ImageEffectController.instance.invert;
 
+                //IF CARD COULDN'T BE USED,
+                //THEN...
+                /*
                 //Card's selection indicator is disabled
                 selectedCard.transform.GetChild(0).gameObject.SetActive(false);
 
                 //Card is back to the hand (bottom center group of cards)
                 selectedCard.transform.parent = transform;
-
+                */
+                //ELSE
+                Destroy(selectedCard);
                 selectedCard = null;
 
                 //Placement area is disabled

@@ -23,7 +23,13 @@ public class Health : MonoBehaviour
         if(destroyOnZero && current <= 0) Destroy(gameObject);
     }
 
-    void Reset()
+    public void Set(float value)
+    {
+        max = value;
+        Reset();
+    }
+
+    public void Reset()
     {
         current = max;
         bar.value = current/max;
