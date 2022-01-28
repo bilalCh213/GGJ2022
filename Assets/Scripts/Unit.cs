@@ -40,6 +40,7 @@ public class Unit : MonoBehaviour
     void OnCollisionStay2D(Collision2D coll)
     {
         if(coll.gameObject.tag == tag) return;
+        
         Health health = coll.gameObject.GetComponent<Health>();
         if(health != null)
             health.Change(-properties.damage * Time.deltaTime); 

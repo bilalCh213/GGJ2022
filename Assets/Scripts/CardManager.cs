@@ -24,6 +24,9 @@ public class CardManager : MonoBehaviour
     [Space]
     [SerializeField] private GameObject sideAPlacementArea;
     [SerializeField] private GameObject sideBPlacementArea;
+    [Space]
+    [SerializeField] private GameObject addCardArea;
+    [SerializeField] private GameObject removeCardArea;
 
     private GameObject selectedCard = null;
 
@@ -42,6 +45,9 @@ public class CardManager : MonoBehaviour
     void Update()
     {
         float lerp = lerpFactor * Time.deltaTime;
+
+        //Displaying Add Card Option when cards are quite less
+        addCardArea.SetActive(transform.childCount <= 3);
 
         //Processing Unselected Cards
         int hoveredIndex = GetHoveredIndex();
@@ -104,6 +110,9 @@ public class CardManager : MonoBehaviour
         //Processing Selected Card
         if(selectedCard != null)
         {
+            //Remove Card Option is displayed when some card is selected
+            removeCardArea.SetActive(true);
+
             //When dragging the selected card...
             if(Input.GetMouseButton(0))
             {
@@ -135,6 +144,10 @@ public class CardManager : MonoBehaviour
                 //Placement area is disabled
                 sideAPlacementArea.SetActive(false);
             }
+        }
+        else
+        {
+            removeCardArea.SetActive(false);
         }
     }
 }
