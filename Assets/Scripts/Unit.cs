@@ -71,11 +71,7 @@ public class Unit : MonoBehaviour
         if(target != null && !stop)
         {
             characterAnimator.SetBool("Walk", true);
-
-            if(intention == Vector3.zero)
-                rb.MovePosition(Vector3.MoveTowards(transform.position, target.transform.position, (properties.speed * speedMultiplier) * Time.deltaTime));
-            else
-                rb.MovePosition(transform.position + (intention * (properties.speed * speedMultiplier) * Time.deltaTime));
+            transform.position += intention * (properties.speed * speedMultiplier) * Time.deltaTime;
         }
         else
         {
@@ -102,7 +98,7 @@ public class Unit : MonoBehaviour
     {
         if(coll.gameObject.tag == tag || coll.gameObject.tag == avoidTag)
         {
-            if(!stop) rb.MovePosition(transform.position + transform.up / 100.0f);
+            if(!stop) transform.position += transform.up / 100.0f;
             return;
         }
         

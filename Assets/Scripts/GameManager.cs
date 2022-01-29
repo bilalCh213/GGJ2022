@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,8 +11,11 @@ public class GameManager : MonoBehaviour
     [Space]
     public GameObject unitA;
     public GameObject unitB;
+    [Space]
+    public TextMeshPro gameTimeText;
     
     private float timer = 0.0f;
+    private float gameTime = 0.0f;
 
     static public GameManager instance = null;
 
@@ -41,6 +45,7 @@ public class GameManager : MonoBehaviour
 
     public void DestroyRandomUnit(bool isA = true)
     {
+        if((isA && unitA.transform.childCount <= 0) || (!isA && unitB.transform.childCount <= 0)) return;
         int randomIndex = Random.Range(0, isA ? unitA.transform.childCount : unitB.transform.childCount);
         if(isA) Destroy(unitA.transform.GetChild(randomIndex).gameObject);
         else Destroy(unitB.transform.GetChild(randomIndex).gameObject);
@@ -101,6 +106,9 @@ public class GameManager : MonoBehaviour
         }
         else
             timer -= Time.deltaTime;
+
+        gameTime += Time.unscaledDeltaTime;
+        gameTimeText.text = (Mathf.FloorToInt(gameTime) / 60).ToString() + ":" + (Mathf.FloorToInt(gameTime) % 60).ToString();
     }
 
     Vector3 GetMovementIntention(Transform unitTr, bool isA = true)

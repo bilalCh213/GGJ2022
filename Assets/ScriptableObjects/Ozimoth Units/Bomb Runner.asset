@@ -15,5 +15,5 @@ MonoBehaviour:
   character: {fileID: 21300000, guid: 3b541e3ad7ed4164ba97a6a5a17cc67d, type: 3}
   health: 0.25
   damage: 0.9
-  speed: 40
+  speed: 5
   mpCost: 15
