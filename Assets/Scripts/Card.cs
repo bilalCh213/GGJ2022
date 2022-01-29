@@ -14,10 +14,7 @@ public class Card : MonoBehaviour
     [SerializeField] private TextMeshPro mpCost;
 
     private int propertyIndex = -1;
-
-    private bool hovered = false;
-
-    public bool Hovered { get { return hovered; } }
+    
     public int MPCost { get { return properties[propertyIndex].mpCost; } }
 
     void Start()
@@ -41,15 +38,5 @@ public class Card : MonoBehaviour
             unit.SetTargetUsingTag("BaseB");
             unit.SetProperties(properties[propertyIndex]);
         }
-    }
-
-    void OnMouseOver()
-    {
-        hovered = true;
-    }
-
-    void OnMouseExit()
-    {
-        hovered = false;
     }
 }

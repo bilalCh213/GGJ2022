@@ -1010,6 +1010,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f6498466b0ce8b48ae06a34e28196c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardObject: {fileID: 7990995076978686158, guid: 435c7941a3b272044aeb166a5fd58116, type: 3}
   lerpFactor: 10
   startingColor: {r: 0, g: 0, b: 0, a: 0}
   startingPosition: {x: 1, y: -3.5, z: 0}
@@ -1026,6 +1027,7 @@ MonoBehaviour:
   selectedCardOffset: {x: 0, y: 1.5, z: 0}
   selectedCardScale: {x: 0.6, y: 0.6, z: 0.6}
   mp: {fileID: 1884162056}
+  addCardMPCost: 10
   sideAPlacementArea: {fileID: 1479674765}
   sideBPlacementArea: {fileID: 1322905277}
   addCardArea: {fileID: 502504955}
@@ -1102,6 +1104,8 @@ GameObject:
   m_Component:
   - component: {fileID: 502504957}
   - component: {fileID: 502504956}
+  - component: {fileID: 502504958}
+  - component: {fileID: 502504959}
   m_Layer: 0
   m_Name: Add
   m_TagString: Untagged
@@ -1174,6 +1178,44 @@ Transform:
   m_Father: {fileID: 192266617}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &502504958
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502504955}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2, y: 3.2}
+    newSize: {x: 2, y: 3.2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2, y: 3.2}
+  m_EdgeRadius: 0
+--- !u!114 &502504959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502504955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac6ffb3f9d6375044a1734432691f1ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1666,7 +1708,7 @@ MonoBehaviour:
   spawnObjects:
   - {fileID: 6719148424618451414, guid: 85bc25091d821044980fe61e705afaf0, type: 3}
   minDelay: 2
-  maxDelay: 4
+  maxDelay: 3
   minSpawnPosition: {x: -7, y: 0.3}
   maxSpawnPosition: {x: -1.2, y: -3.3}
   objectTag: B
@@ -1687,6 +1729,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1226464506}
   - component: {fileID: 1226464505}
+  - component: {fileID: 1226464507}
+  - component: {fileID: 1226464508}
   m_Layer: 0
   m_Name: Remove
   m_TagString: Untagged
@@ -1759,6 +1803,44 @@ Transform:
   m_Father: {fileID: 192266617}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1226464507
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1226464504}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2, y: 3.2}
+    newSize: {x: 2, y: 3.2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2, y: 3.2}
+  m_EdgeRadius: 0
+--- !u!114 &1226464508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1226464504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac6ffb3f9d6375044a1734432691f1ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1245793507
 GameObject:
   m_ObjectHideFlags: 0
@@ -2685,7 +2767,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e6ed826b671535438e1dc2e3862474f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  max: 60
+  max: 80
   regenRate: 2
   radialMask: {fileID: 641160222}
   valueText: {fileID: 367163177}

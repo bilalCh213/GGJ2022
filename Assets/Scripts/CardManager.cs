@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CardManager : MonoBehaviour
 {
+    [SerializeField] private GameObject cardObject;
+    [Space]
     [SerializeField] private float lerpFactor = 0.1f;
     [SerializeField] private Color startingColor = Color.white;
     [SerializeField] private Vector3 startingPosition = Vector3.zero;
@@ -24,6 +26,7 @@ public class CardManager : MonoBehaviour
     [SerializeField] private Vector3 selectedCardScale = Vector3.one;
     [Space]
     [SerializeField] private MP mp;
+    [SerializeField] private int addCardMPCost = 10;
     [Space]
     [SerializeField] private GameObject sideAPlacementArea;
     [SerializeField] private GameObject sideBPlacementArea;
@@ -40,7 +43,7 @@ public class CardManager : MonoBehaviour
     int GetHoveredIndex()
     {
         for(int i = 0; i < transform.childCount; i++)
-            if(transform.GetChild(i).GetComponent<Card>().Hovered)
+            if(transform.GetChild(i).GetComponent<HoverCheck>().Hovered)
                 return i;
         return -1;
     }
@@ -78,7 +81,7 @@ public class CardManager : MonoBehaviour
             Vector3 scale = startingScale;
 
             //When card is hovered...
-            if(tr.GetComponent<Card>().Hovered && selectable)
+            if(tr.GetComponent<HoverCheck>().Hovered && selectable)
             {
                 position.y += hoveredYOffset;
                 position.z = -1.0f;
@@ -99,6 +102,10 @@ public class CardManager : MonoBehaviour
                     //sideAPlacementArea is the player's placement area
                     sideAPlacementArea.SetActive(true);
 
+                    //Remove Card Option is displayed when a card is selected
+                    removeCardArea.SetActive(true);
+                    removeCardArea.transform.localScale = Vector3.one * 0.8f;
+
                     blackOverlayRend.color = startingColor;
                 }
             }
@@ -116,8 +123,7 @@ public class CardManager : MonoBehaviour
         //Processing Selected Card
         if(selectedCard != null)
         {
-            //Remove Card Option is displayed when some card is selected
-            removeCardArea.SetActive(true);
+            bool removeHover = removeCardArea.GetComponent<HoverCheck>().Hovered;
 
             //When dragging the selected card...
             if(Input.GetMouseButton(0))
@@ -126,34 +132,55 @@ public class CardManager : MonoBehaviour
                 selectedCard.transform.position = Vector3.Lerp(selectedCard.transform.position, Utility.MousePos() + selectedCardOffset, lerp);
                 selectedCard.transform.rotation = Quaternion.Lerp(selectedCard.transform.rotation, Quaternion.identity, lerp);
                 selectedCard.transform.localScale = Vector3.Lerp(selectedCard.transform.localScale, selectedCardScale, lerp);
+
+                removeCardArea.transform.localScale = Vector3.Lerp(removeCardArea.transform.localScale, Vector3.one * (removeHover ? 1.0f : 0.8f), lerpFactor * Time.deltaTime);
             }
             //When the selected card is no longer being dragged...
             else
             {
-                //take action at the mouse position and invert the screen colors
-                selectedCard.GetComponent<Card>().Action(Utility.MousePos(), mp);
-                ImageEffectController.instance.invert = !ImageEffectController.instance.invert;
+                if(removeHover)
+                {
+                    mp.Value -= selectedCard.GetComponent<Card>().MPCost / 2.0f;
+                    Destroy(selectedCard);
+                    selectedCard = null;
+                }
+                else
+                {
+                    //take action at the mouse position and invert the screen colors
+                    selectedCard.GetComponent<Card>().Action(Utility.MousePos(), mp);
+                    ImageEffectController.instance.invert = !ImageEffectController.instance.invert;
 
-                //IF CARD COULDN'T BE USED,
-                //THEN...
-                /*
-                //Card's selection indicator is disabled
-                selectedCard.transform.GetChild(0).gameObject.SetActive(false);
+                    //IF CARD COULDN'T BE USED,
+                    //THEN...
+                    /*
+                    //Card's selection indicator is disabled
+                    selectedCard.transform.GetChild(0).gameObject.SetActive(false);
 
-                //Card is back to the hand (bottom center group of cards)
-                selectedCard.transform.parent = transform;
-                */
-                //ELSE
-                Destroy(selectedCard);
-                selectedCard = null;
+                    //Card is back to the hand (bottom center group of cards)
+                    selectedCard.transform.parent = transform;
+                    */
+                    //ELSE
+                    Destroy(selectedCard);
+                    selectedCard = null;
 
-                //Placement area is disabled
-                sideAPlacementArea.SetActive(false);
+                    //Placement area is disabled
+                    sideAPlacementArea.SetActive(false);
+                }
             }
         }
         else
         {
             removeCardArea.SetActive(false);
+        }
+
+        //Add a card when clicking on Add Card Area
+        if(addCardArea.GetComponent<HoverCheck>().Hovered
+        && Input.GetMouseButtonDown(0)
+        && mp.Value >= addCardMPCost)
+        {
+            mp.Value -= addCardMPCost;
+            GameObject newCardObject = Instantiate(cardObject, addCardArea.transform.position, Quaternion.identity);
+            newCardObject.transform.parent = transform;
         }
     }
 }
