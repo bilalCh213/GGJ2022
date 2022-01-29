@@ -14,7 +14,7 @@ public class Card : MonoBehaviour
     [SerializeField] private TextMeshPro mpCost;
 
     private int propertyIndex = -1;
-    
+
     public int MPCost { get { return properties[propertyIndex].mpCost; } }
 
     void Start()
@@ -36,6 +36,7 @@ public class Card : MonoBehaviour
         {
             newObj.tag = "A";
             unit.SetTargetUsingTag("BaseB");
+            unit.SetAvoidTag("BaseA");
             unit.SetProperties(properties[propertyIndex]);
         }
     }

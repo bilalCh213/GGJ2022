@@ -36,10 +36,6 @@ public class CardManager : MonoBehaviour
 
     private GameObject selectedCard = null;
 
-    //void Start()
-    //{    
-    //}
-
     int GetHoveredIndex()
     {
         for(int i = 0; i < transform.childCount; i++)
@@ -81,32 +77,39 @@ public class CardManager : MonoBehaviour
             Vector3 scale = startingScale;
 
             //When card is hovered...
-            if(tr.GetComponent<HoverCheck>().Hovered && selectable)
+            if(tr.GetComponent<HoverCheck>().Hovered)
             {
-                position.y += hoveredYOffset;
-                position.z = -1.0f;
-                rotation.y = 0.0f;
-                scale = hoveredCardScale;
-
-                //When hovered card is selected...
-                if(Input.GetMouseButtonDown(0) && selectedCard == null)
+                if(selectable)
                 {
-                    selectedCard = tr.gameObject;
+                    position.y += hoveredYOffset;
+                    position.z = -1.0f;
+                    rotation.y = 0.0f;
+                    scale = hoveredCardScale;
 
-                    ////Card gets out of the Card Manager's transform so that, it is no longer included in the hand (bottom center group of cards)
-                    selectedCard.transform.parent = null;
+                    //When hovered card is selected...
+                    if(Input.GetMouseButtonDown(0) && selectedCard == null)
+                    {
+                        selectedCard = tr.gameObject;
 
-                    //Each card got an selection indicator that is activated upon selection
-                    selectedCard.transform.GetChild(0).gameObject.SetActive(true);
+                        //Card gets out of the Card Manager's transform so that, it is no longer included in the hand (bottom center group of cards)
+                        selectedCard.transform.parent = null;
 
-                    //sideAPlacementArea is the player's placement area
-                    sideAPlacementArea.SetActive(true);
+                        //Each card got an selection indicator that is activated upon selection
+                        selectedCard.transform.GetChild(0).gameObject.SetActive(true);
 
-                    //Remove Card Option is displayed when a card is selected
-                    removeCardArea.SetActive(true);
-                    removeCardArea.transform.localScale = Vector3.one * 0.8f;
+                        //sideAPlacementArea is the player's placement area
+                        sideAPlacementArea.SetActive(true);
 
-                    blackOverlayRend.color = startingColor;
+                        //Remove Card Option is displayed when a card is selected
+                        removeCardArea.SetActive(true);
+                        removeCardArea.transform.localScale = Vector3.one * 0.8f;
+
+                        blackOverlayRend.color = startingColor;
+                    }
+                }
+                else if(Input.GetMouseButtonDown(0))
+                {
+                    tr.localScale = Vector3.one * 0.4f;
                 }
             }
             else

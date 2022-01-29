@@ -119,6 +119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetTag: BaseA
+  avoidTag: BaseB
   characterRenderer: {fileID: 7670368385469861154}
   characterAnimator: {fileID: 292745463261919727}
   properties: {fileID: 11400000, guid: e018525a4eabd584795d875d2815092e, type: 2}
