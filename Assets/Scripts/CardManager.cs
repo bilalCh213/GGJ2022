@@ -39,6 +39,26 @@ public class CardManager : MonoBehaviour
 
     private GameObject selectedCard = null;
 
+    static public CardManager instance = null;
+
+    public void AddCard(GameObject placement = null)
+    {
+        GameObject newCardObject = Instantiate(cardObject, placement == null ? transform.position : placement.transform.position, Quaternion.identity);
+        newCardObject.transform.parent = transform;
+    }
+
+    public void RemoveRandomCard()
+    {
+        if(transform.childCount <= 0) return;
+        int randomCard = Random.Range(0, transform.childCount);
+        Destroy(transform.GetChild(randomCard).gameObject);
+    }
+
+    void Awake()
+    {
+        instance = this;
+    }
+
     int GetHoveredIndex()
     {
         for(int i = 0; i < transform.childCount; i++)
@@ -118,6 +138,7 @@ public class CardManager : MonoBehaviour
                 else if(Input.GetMouseButtonDown(0))
                 {
                     tr.localScale = Vector3.one * 0.4f;
+                    
                 }
             }
             else
@@ -192,8 +213,7 @@ public class CardManager : MonoBehaviour
         && mp.Value >= addCardMPCost)
         {
             mp.Value -= addCardMPCost;
-            GameObject newCardObject = Instantiate(cardObject, addCardArea.transform.position, Quaternion.identity);
-            newCardObject.transform.parent = transform;
+            AddCard(addCardArea);
         }
     }
 

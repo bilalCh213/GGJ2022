@@ -16,6 +16,7 @@ public class Unit : MonoBehaviour
     [SerializeField] private float yMax = 0.0f;
 
     [HideInInspector] public Vector3 intention = Vector3.zero;
+    [HideInInspector] public float speedMultiplier = 1.0f;
 
     private Rigidbody2D rb;
     private GameObject target;
@@ -72,9 +73,9 @@ public class Unit : MonoBehaviour
             characterAnimator.SetBool("Walk", true);
 
             if(intention == Vector3.zero)
-                rb.MovePosition(Vector3.MoveTowards(transform.position, target.transform.position, properties.speed * Time.deltaTime));
+                rb.MovePosition(Vector3.MoveTowards(transform.position, target.transform.position, (properties.speed * speedMultiplier) * Time.deltaTime));
             else
-                rb.MovePosition(transform.position + (intention * properties.speed * Time.deltaTime));
+                rb.MovePosition(transform.position + (intention * (properties.speed * speedMultiplier) * Time.deltaTime));
         }
         else
         {

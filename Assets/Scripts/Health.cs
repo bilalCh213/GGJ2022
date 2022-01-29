@@ -39,6 +39,12 @@ public class Health : MonoBehaviour
         bar.value = current/max;
     }
 
+    public void Half()
+    {
+        current /= 2.0f;
+        bar.value = current/max;
+    }
+
     void Start()
     {
         Reset();

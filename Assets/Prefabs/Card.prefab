@@ -1518,6 +1518,24 @@ MonoBehaviour:
   mpCost: {fileID: 5256591397402847775}
   goodText: {fileID: 934318618174691684}
   badText: {fileID: 908330547229980517}
+  goodEffects:
+  - An additional unit gets spawned!
+  - No MP will be depleted!
+  - MP regen. gets boosted temporarily!
+  - 2 cards will be added to your hand.
+  - All of your current units gets faster.
+  - All of your current units will replenish HP.
+  - Your base HP gets replenished.
+  - All enemy units gets destroyed!
+  badEffects:
+  - One of your unit gets destroyed!
+  - Double MP gets depleted!
+  - Temporary MP degeneration!
+  - 2 cards will be removed from your hand.
+  - All of your current units gets slower.
+  - All of your current units' HP gets half.
+  - Your base HP gets halved.
+  - All your units gets destroyed!
 --- !u!114 &8944993357469447225
 MonoBehaviour:
   m_ObjectHideFlags: 0

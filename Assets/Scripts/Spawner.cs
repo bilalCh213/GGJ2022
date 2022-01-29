@@ -42,7 +42,7 @@ public class Spawner : MonoBehaviour
         }
         else
         {
-            timer -= Time.deltaTime;
+            timer -= Time.deltaTime * (tr.childCount <= 1 ? 2.0f : 1.0f);
         }
     }
 

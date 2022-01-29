@@ -13,6 +13,68 @@ public class GameManager : MonoBehaviour
     
     private float timer = 0.0f;
 
+    static public GameManager instance = null;
+
+    public void IncreaseUnitsSpeed()
+    {
+        for(int i = 0; i < unitA.transform.childCount; i++)
+            unitA.transform.GetChild(i).GetComponent<Unit>().speedMultiplier *= 1.5f; 
+    }
+
+    public void DecreaseUnitsSpeed()
+    {
+        for(int i = 0; i < unitA.transform.childCount; i++)
+            unitA.transform.GetChild(i).GetComponent<Unit>().speedMultiplier /= 1.5f; 
+    }
+
+    public void ResetUnitsHealth()
+    {
+        for(int i = 0; i < unitA.transform.childCount; i++)
+            unitA.transform.GetChild(i).GetComponent<Health>().Reset();
+    }
+
+    public void HalfUnitsHealth()
+    {
+        for(int i = 0; i < unitA.transform.childCount; i++)
+            unitA.transform.GetChild(i).GetComponent<Health>().Half();
+    }
+
+    public void DestroyRandomUnit(bool isA = true)
+    {
+        int randomIndex = Random.Range(0, isA ? unitA.transform.childCount : unitB.transform.childCount);
+        if(isA) Destroy(unitA.transform.GetChild(randomIndex).gameObject);
+        else Destroy(unitB.transform.GetChild(randomIndex).gameObject);
+    }
+
+    public void DestroyAllUnits(bool isA = true)
+    {
+        List<GameObject> objectsToDestroy = new List<GameObject>();
+        if(isA)
+            for(int i = 0; i < unitA.transform.childCount; i++)
+                objectsToDestroy.Add(unitA.transform.GetChild(i).gameObject);
+        else
+            for(int i = 0; i < unitB.transform.childCount; i++)
+                objectsToDestroy.Add(unitB.transform.GetChild(i).gameObject);
+        foreach(var o in objectsToDestroy)
+            Destroy(o);
+        objectsToDestroy.Clear();
+    }
+
+    public void ResetBaseHealth()
+    {
+        baseA.GetComponent<Health>().Reset();
+    }
+
+    public void HalfBaseHealth()
+    {
+        baseA.GetComponent<Health>().Half();
+    }
+
+    void Awake()
+    {
+        instance = this;
+    }
+
     void Update()
     {
         if(timer <= 0.0f)
