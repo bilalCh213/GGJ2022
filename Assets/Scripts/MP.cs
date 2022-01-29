@@ -10,6 +10,8 @@ public class MP : MonoBehaviour
     [SerializeField] private SpriteMask radialMask;
     [SerializeField] private TextMeshPro valueText;
 
+    public float regenBoost = 0.0f;
+
     private float value = 0;
 
     public float Value { get { return value; } set { this.value = value; } }
@@ -22,7 +24,9 @@ public class MP : MonoBehaviour
 
     void Update()
     {
-        value += regenRate * Time.deltaTime;
+        value += (regenRate + regenBoost) * Time.deltaTime;
+        if(regenBoost <= 0.0f) regenBoost = 0.0f;
+        else regenBoost -= Time.deltaTime;
         if(value > max) value = max;
         radialMask.alphaCutoff = value/max;
         valueText.text = Mathf.FloorToInt(value).ToString() + "/" + Mathf.FloorToInt(max).ToString();
