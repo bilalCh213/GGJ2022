@@ -5,6 +5,7 @@ using static UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
+    [SerializeField] protected Transform tr;
     [SerializeField] protected GameObject[] spawnObjects;
     [SerializeField] protected float minDelay = 4.0f;
     [SerializeField] protected float maxDelay = 8.0f;
@@ -35,7 +36,7 @@ public class Spawner : MonoBehaviour
         {
             GameObject newObj = GetRandomSpawnedObject();
             ModifySpawnedObject(newObj);
-            newObj.transform.parent = transform;
+            newObj.transform.parent = tr;
             objects.Add(newObj);
             timer = Range(minDelay, maxDelay);
         }

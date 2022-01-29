@@ -12,6 +12,9 @@ public class Card : MonoBehaviour
     [SerializeField] private SpriteRenderer characterRenderer;
     [SerializeField] private TextMeshPro title;
     [SerializeField] private TextMeshPro mpCost;
+    [Space]
+    [SerializeField] private TextMeshPro goodText;
+    [SerializeField] private TextMeshPro badText;
 
     private int propertyIndex = -1;
 
@@ -26,11 +29,18 @@ public class Card : MonoBehaviour
         mpCost.text = properties[propertyIndex].mpCost.ToString();
     }
 
-    public void Action(Vector3 position, MP mp)
+    public void Update()
+    {
+        goodText.gameObject.SetActive(!ImageEffectController.instance.invert);
+        badText.transform.parent.gameObject.SetActive(ImageEffectController.instance.invert);
+    }
+
+    public void Action(Vector3 position, MP mp, GameObject parentObj)
     {
         mp.Value -= properties[propertyIndex].mpCost;
 
         GameObject newObj = Instantiate(objectToSpawn, position, Quaternion.identity);
+        newObj.transform.parent = parentObj.transform;
         Unit unit = newObj.GetComponent<Unit>();
         if(unit != null)
         {

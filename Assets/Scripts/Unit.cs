@@ -9,6 +9,13 @@ public class Unit : MonoBehaviour
     [SerializeField] private SpriteRenderer characterRenderer = null;
     [SerializeField] private Animator characterAnimator = null;
     [SerializeField] private UnitProperties properties = null;
+    [Space]
+    [SerializeField] private float xMin = 0.0f;
+    [SerializeField] private float xMax = 0.0f;
+    [SerializeField] private float yMin = 0.0f;
+    [SerializeField] private float yMax = 0.0f;
+
+    [HideInInspector] public Vector3 intention = Vector3.zero;
 
     private Rigidbody2D rb;
     private GameObject target;
@@ -43,6 +50,11 @@ public class Unit : MonoBehaviour
         target = GameObject.FindGameObjectWithTag(targetTag);
     }
 
+    public GameObject GetTarget()
+    {
+        return target;
+    }
+
     public void SetAvoidTag(string tag)
     {
         avoidTag = tag;
@@ -58,7 +70,11 @@ public class Unit : MonoBehaviour
         if(target != null && !stop)
         {
             characterAnimator.SetBool("Walk", true);
-            rb.MovePosition(Vector3.MoveTowards(transform.position, target.transform.position, properties.speed * Time.deltaTime));
+
+            if(intention == Vector3.zero)
+                rb.MovePosition(Vector3.MoveTowards(transform.position, target.transform.position, properties.speed * Time.deltaTime));
+            else
+                rb.MovePosition(transform.position + (intention * properties.speed * Time.deltaTime));
         }
         else
         {
@@ -72,6 +88,13 @@ public class Unit : MonoBehaviour
                 healthToAttack.Change(-properties.damage);
             attack = false;
         }
+
+        Vector3 pos = transform.position;
+        if(pos.x < xMin) pos.x = xMin;
+        else if(pos.x > xMax) pos.x = xMax;
+        if(pos.y < yMin) pos.y = yMin;
+        else if(pos.y > yMax) pos.y = yMax;
+        transform.position = pos;
     }
 
     void OnCollisionStay2D(Collision2D coll)
@@ -95,5 +118,14 @@ public class Unit : MonoBehaviour
         
         stop = false;
         characterAnimator.SetBool("Attack", false);
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(new Vector3(xMin, yMin, 0.0f), new Vector3(xMax, yMin, 0.0f));
+        Gizmos.DrawLine(new Vector3(xMin, yMax, 0.0f), new Vector3(xMax, yMax, 0.0f));
+        Gizmos.DrawLine(new Vector3(xMin, yMin, 0.0f), new Vector3(xMin, yMax, 0.0f));
+        Gizmos.DrawLine(new Vector3(xMax, yMin, 0.0f), new Vector3(xMax, yMax, 0.0f));
     }
 }

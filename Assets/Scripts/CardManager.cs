@@ -28,8 +28,11 @@ public class CardManager : MonoBehaviour
     [SerializeField] private MP mp;
     [SerializeField] private int addCardMPCost = 10;
     [Space]
+    [SerializeField] private GameObject unitsA;
     [SerializeField] private GameObject sideAPlacementArea;
     [SerializeField] private GameObject sideBPlacementArea;
+    [SerializeField] private Vector2 minPlacement = Vector2.zero;
+    [SerializeField] private Vector2 maxPlacement = Vector2.zero;
     [Space]
     [SerializeField] private GameObject addCardArea;
     [SerializeField] private GameObject removeCardArea;
@@ -42,6 +45,11 @@ public class CardManager : MonoBehaviour
             if(transform.GetChild(i).GetComponent<HoverCheck>().Hovered)
                 return i;
         return -1;
+    }
+
+    bool IsInsidePlacement(Vector2 pos)
+    {
+        return pos.x >= minPlacement.x && pos.x < maxPlacement.x && pos.y >= minPlacement.y && pos.y < maxPlacement.y;
     }
 
     void Update()
@@ -149,21 +157,23 @@ public class CardManager : MonoBehaviour
                 }
                 else
                 {
-                    //take action at the mouse position and invert the screen colors
-                    selectedCard.GetComponent<Card>().Action(Utility.MousePos(), mp);
-                    ImageEffectController.instance.invert = !ImageEffectController.instance.invert;
+                    Vector2 pos = Utility.MousePos();
+                    if(IsInsidePlacement(pos))
+                    {
+                        //take action at the mouse position and invert the screen colors
+                        selectedCard.GetComponent<Card>().Action(pos, mp, unitsA);
+                        ImageEffectController.instance.invert = !ImageEffectController.instance.invert;
+                        Destroy(selectedCard);
+                    }
+                    else
+                    {
+                        //Card's selection indicator is disabled
+                        selectedCard.transform.GetChild(0).gameObject.SetActive(false);
 
-                    //IF CARD COULDN'T BE USED,
-                    //THEN...
-                    /*
-                    //Card's selection indicator is disabled
-                    selectedCard.transform.GetChild(0).gameObject.SetActive(false);
+                        //Card is back to the hand (bottom center group of cards)
+                        selectedCard.transform.parent = transform;
+                    }
 
-                    //Card is back to the hand (bottom center group of cards)
-                    selectedCard.transform.parent = transform;
-                    */
-                    //ELSE
-                    Destroy(selectedCard);
                     selectedCard = null;
 
                     //Placement area is disabled
@@ -185,5 +195,14 @@ public class CardManager : MonoBehaviour
             GameObject newCardObject = Instantiate(cardObject, addCardArea.transform.position, Quaternion.identity);
             newCardObject.transform.parent = transform;
         }
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.white;
+        Gizmos.DrawLine(new Vector3(minPlacement.x, minPlacement.y), new Vector3(minPlacement.x, maxPlacement.y));
+        Gizmos.DrawLine(new Vector3(minPlacement.x, minPlacement.y), new Vector3(maxPlacement.x, minPlacement.y));
+        Gizmos.DrawLine(new Vector3(minPlacement.x, maxPlacement.y), new Vector3(maxPlacement.x, maxPlacement.y));
+        Gizmos.DrawLine(new Vector3(maxPlacement.x, minPlacement.y), new Vector3(maxPlacement.x, maxPlacement.y));
     }
 }

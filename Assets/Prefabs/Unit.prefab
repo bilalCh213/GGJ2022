@@ -123,6 +123,11 @@ MonoBehaviour:
   characterRenderer: {fileID: 7670368385469861154}
   characterAnimator: {fileID: 292745463261919727}
   properties: {fileID: 11400000, guid: e018525a4eabd584795d875d2815092e, type: 2}
+  xMin: -8
+  xMax: 8
+  yMin: -1
+  yMax: 2.4
+  intention: {x: 0, y: 0, z: 0}
 --- !u!114 &6719148424618451409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,7 +315,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 3b541e3ad7ed4164ba97a6a5a17cc67d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d2304a6690dc1214ab5b343b7856fdec, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
