@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7b2a8e5dd5e1e2499b8dff4cca18e0b, type: 3}
   m_Name: Spear Head
   m_EditorClassIdentifier: 
-  character: {fileID: 21300000, guid: 0037dc127c3ed6e4aab7fce14de6ba78, type: 3}
+  character: {fileID: 21300000, guid: 3f8e936a00afbf345872a94063ec3b47, type: 3}
   health: 1
   damage: 0.25
   speed: 25
+  mpCost: 8

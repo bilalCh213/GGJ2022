@@ -14,8 +14,12 @@ public class UnitSpawner : Spawner
     override protected void ModifySpawnedObject(GameObject obj)
     {
         gameObject.tag = objectTag;
-        obj.GetComponent<Unit>().SetTargetUsingTag(targetTag);
-        obj.GetComponent<Unit>().SetProperties(properties[Range(0, properties.Length)]);
-        obj.transform.GetChild(0).GetComponent<SpriteRenderer>().flipX = flipX;
+        Unit unit = obj.GetComponent<Unit>();
+        if(unit != null)
+        {
+            unit.SetTargetUsingTag(targetTag);
+            unit.SetProperties(properties[Range(0, properties.Length)]);
+            unit.GetCharacterRenderer().flipX = flipX;
+        }
     }
 }

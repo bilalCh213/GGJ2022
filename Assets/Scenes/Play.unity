@@ -1022,8 +1022,10 @@ MonoBehaviour:
   angleOffsetPerCard: -6
   hoveredYOffset: 0.4
   hoveredCardScale: {x: 1.25, y: 1.25, z: 1.25}
+  unselectableYOffset: -0.4
   selectedCardOffset: {x: 0, y: 1.5, z: 0}
   selectedCardScale: {x: 0.6, y: 0.6, z: 0.6}
+  mp: {fileID: 1884162056}
   sideAPlacementArea: {fileID: 1479674765}
   sideBPlacementArea: {fileID: 1322905277}
   addCardArea: {fileID: 502504955}
@@ -2683,7 +2685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e6ed826b671535438e1dc2e3862474f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  max: 100
+  max: 60
   regenRate: 2
   radialMask: {fileID: 641160222}
   valueText: {fileID: 367163177}

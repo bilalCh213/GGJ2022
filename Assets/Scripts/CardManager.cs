@@ -18,9 +18,12 @@ public class CardManager : MonoBehaviour
     [Space]
     [SerializeField] private float hoveredYOffset = 0.0f;
     [SerializeField] private Vector3 hoveredCardScale = Vector3.one;
+    [SerializeField] private float unselectableYOffset = 0.0f;
     [Space]
     [SerializeField] private Vector3 selectedCardOffset = Vector3.zero;
     [SerializeField] private Vector3 selectedCardScale = Vector3.one;
+    [Space]
+    [SerializeField] private MP mp;
     [Space]
     [SerializeField] private GameObject sideAPlacementArea;
     [SerializeField] private GameObject sideBPlacementArea;
@@ -58,13 +61,15 @@ public class CardManager : MonoBehaviour
             Transform tr = transform.GetChild(i);
             SpriteRenderer blackOverlayRend = tr.GetChild(1).GetComponent<SpriteRenderer>();
 
+            bool selectable = tr.gameObject.GetComponent<Card>().MPCost <= mp.Value;
+
             //Change in color helps in distinguishing cards
             blackOverlayRend.color = Color.Lerp(blackOverlayRend.color, Color.Lerp(startingColor, endColor, colorLerpPerCard * offsetIndex), lerp);
 
             //Cards in the hand (bottom center group of cards) are placed in an cool looking and appropriate manner
             Vector3 position = tr.position;
             position.x = startingPosition.x - (xOffsetPerCard * transform.childCount / 2) + (xOffsetPerCard * i);
-            position.y = startingPosition.y - ((hoveredIndex == -1 ? yOffsetPerCard : hoveredYOffset) * offsetIndex);
+            position.y = startingPosition.y - ((hoveredIndex == -1 ? yOffsetPerCard : hoveredYOffset) * offsetIndex) + (selectable ? 0.0f : unselectableYOffset);
 
             //A little rotation between cards look cool!
             Vector3 rotation = tr.rotation.eulerAngles;
@@ -73,10 +78,11 @@ public class CardManager : MonoBehaviour
             Vector3 scale = startingScale;
 
             //When card is hovered...
-            if(tr.GetComponent<Card>().Hovered)
+            if(tr.GetComponent<Card>().Hovered && selectable)
             {
                 position.y += hoveredYOffset;
                 position.z = -1.0f;
+                rotation.y = 0.0f;
                 scale = hoveredCardScale;
 
                 //When hovered card is selected...
@@ -125,7 +131,7 @@ public class CardManager : MonoBehaviour
             else
             {
                 //take action at the mouse position and invert the screen colors
-                selectedCard.GetComponent<Card>().Action(Utility.MousePos());
+                selectedCard.GetComponent<Card>().Action(Utility.MousePos(), mp);
                 ImageEffectController.instance.invert = !ImageEffectController.instance.invert;
 
                 //IF CARD COULDN'T BE USED,

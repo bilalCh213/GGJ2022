@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7b2a8e5dd5e1e2499b8dff4cca18e0b, type: 3}
   m_Name: Bomb Runner
   m_EditorClassIdentifier: 
-  character: {fileID: 21300000, guid: 0201b5c7b73763c40a5e2d5227d4922f, type: 3}
+  character: {fileID: 21300000, guid: 3b541e3ad7ed4164ba97a6a5a17cc67d, type: 3}
   health: 0.1
   damage: 2
   speed: 50
+  mpCost: 15

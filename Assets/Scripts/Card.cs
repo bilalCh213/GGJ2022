@@ -11,23 +11,28 @@ public class Card : MonoBehaviour
     [Space]
     [SerializeField] private SpriteRenderer characterRenderer;
     [SerializeField] private TextMeshPro title;
+    [SerializeField] private TextMeshPro mpCost;
 
     private int propertyIndex = -1;
 
     private bool hovered = false;
 
     public bool Hovered { get { return hovered; } }
+    public int MPCost { get { return properties[propertyIndex].mpCost; } }
 
     void Start()
     {
         propertyIndex = Range(0, properties.Length);
 
-        title.text = properties[propertyIndex].name;
         characterRenderer.sprite = properties[propertyIndex].character;
+        title.text = properties[propertyIndex].name;
+        mpCost.text = properties[propertyIndex].mpCost.ToString();
     }
 
-    public void Action(Vector3 position)
+    public void Action(Vector3 position, MP mp)
     {
+        mp.Value -= properties[propertyIndex].mpCost;
+
         GameObject newObj = Instantiate(objectToSpawn, position, Quaternion.identity);
         Unit unit = newObj.GetComponent<Unit>();
         if(unit != null)

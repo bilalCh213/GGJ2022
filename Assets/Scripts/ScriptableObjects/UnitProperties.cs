@@ -9,4 +9,5 @@ public class UnitProperties : ScriptableObject
     public float health;
     public float damage;
     public float speed;
+    public int mpCost;
 }
