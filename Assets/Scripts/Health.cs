@@ -20,7 +20,11 @@ public class Health : MonoBehaviour
 
         bar.value = current/max;
 
-        if(destroyOnZero && current <= 0) Destroy(gameObject);
+        if(destroyOnZero && current <= 0)
+        {
+            if(gameObject != bar.gameObject) Destroy(bar.gameObject);
+            Destroy(gameObject);
+        }
     }
 
     public void Set(float value)
