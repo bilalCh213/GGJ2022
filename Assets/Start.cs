@@ -6,15 +6,16 @@ using TMPro;
 public class Start : MonoBehaviour
 {
     public GameObject play;
-    public AudioLowPassFilter filter;
     public TextMeshPro title;
     public TextMeshPro click;
 
+    public static AudioClip clip = null;
     public static string firstText = "<size=3>Dino</size>\nFlippers";
     public static string secondText = "Click to Play";
 
     void Awake()
     {
+        if(clip != null) { GetComponent<AudioSource>().Stop(); GetComponent<AudioSource>().PlayOneShot(clip); }
         title.text = firstText;
         click.text = secondText;
     }
@@ -30,7 +31,6 @@ public class Start : MonoBehaviour
         {
             gameObject.SetActive(false);
             play.SetActive(true);
-            filter.enabled = false;
         }
     }
 }

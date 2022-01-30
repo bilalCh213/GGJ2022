@@ -8,6 +8,9 @@ public class Health : MonoBehaviour
     [SerializeField] private Bar bar;
     [Space]
     [SerializeField] private bool destroyOnZero = true;
+    [Space]
+    [SerializeField] private AudioClip unitADestroyClip;
+    [SerializeField] private AudioClip unitBDestroyClip;
 
     private float current = 1.0f;
 
@@ -22,6 +25,8 @@ public class Health : MonoBehaviour
 
         if(destroyOnZero && current <= 0)
         {
+            if(tag == "A") Camera.main.GetComponent<AudioSource>().PlayOneShot(unitADestroyClip);
+            if(tag == "B") Camera.main.GetComponent<AudioSource>().PlayOneShot(unitBDestroyClip);
             if(gameObject != bar.gameObject) Destroy(bar.gameObject);
             Destroy(gameObject);
         }

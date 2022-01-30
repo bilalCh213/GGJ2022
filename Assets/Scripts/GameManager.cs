@@ -13,9 +13,16 @@ public class GameManager : MonoBehaviour
     public GameObject unitB;
     [Space]
     public TextMeshPro gameTimeText;
+    [Space]
+    public AudioSource startAudSrc;
+    public AudioClip startClip;
+    public AudioClip winClip;
+    public AudioClip loseClip;
     
     private float timer = 0.0f;
     private float gameTime = 0.0f;
+
+    private AudioSource audSrc;
 
     static public GameManager instance = null;
 
@@ -78,6 +85,9 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+        startAudSrc.PlayOneShot(startClip);
+        audSrc = GetComponent<AudioSource>();
+        audSrc.volume = 0.0f;
     }
 
     void Update()
@@ -86,12 +96,14 @@ public class GameManager : MonoBehaviour
         {
             if(baseB == null)
             {
+                Start.clip = winClip;
                 Start.firstText = "You win!";
                 Start.secondText = "Click to play again";
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
             else if(baseA == null)
             {
+                Start.clip = loseClip;
                 Start.firstText = "Game Over";
                 Start.secondText = "Click to play again";
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -109,6 +121,8 @@ public class GameManager : MonoBehaviour
 
         gameTime += Time.unscaledDeltaTime;
         gameTimeText.text = (Mathf.FloorToInt(gameTime) / 60).ToString() + ":" + (Mathf.FloorToInt(gameTime) % 60).ToString();
+
+        audSrc.volume = Mathf.Lerp(audSrc.volume, 1.0f, Time.deltaTime * 0.25f);
     }
 
     Vector3 GetMovementIntention(Transform unitTr, bool isA = true)

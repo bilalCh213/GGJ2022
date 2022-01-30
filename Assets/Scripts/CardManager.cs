@@ -36,6 +36,14 @@ public class CardManager : MonoBehaviour
     [Space]
     [SerializeField] private GameObject addCardArea;
     [SerializeField] private GameObject removeCardArea;
+    [Space]
+    [SerializeField] private AudioClip hoverClip;
+    [SerializeField] private AudioClip selectClip;
+    [SerializeField] private AudioClip placeClip;
+
+    private AudioSource audSrc;
+
+    private int prevHoverIndex = -1;
 
     private GameObject selectedCard = null;
 
@@ -57,6 +65,7 @@ public class CardManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+        audSrc = transform.parent.GetComponent<AudioSource>();
     }
 
     int GetHoveredIndex()
@@ -81,6 +90,8 @@ public class CardManager : MonoBehaviour
 
         //Processing Unselected Cards
         int hoveredIndex = GetHoveredIndex();
+        if(hoveredIndex != prevHoverIndex) audSrc.PlayOneShot(hoverClip);
+
         for(int i = 0; i < transform.childCount; i++)
         {
             int offsetIndex = hoveredIndex == -1 ? Mathf.Abs(i - ((transform.childCount - 1) / 2)) : Mathf.Abs(i - hoveredIndex);
@@ -133,12 +144,13 @@ public class CardManager : MonoBehaviour
                         removeCardArea.transform.localScale = Vector3.one * 0.8f;
 
                         blackOverlayRend.color = startingColor;
+
+                        audSrc.PlayOneShot(selectClip);
                     }
                 }
                 else if(Input.GetMouseButtonDown(0))
                 {
                     tr.localScale = Vector3.one * 0.4f;
-                    
                 }
             }
             else
@@ -185,6 +197,8 @@ public class CardManager : MonoBehaviour
                         selectedCard.GetComponent<Card>().Action(pos, mp, unitsA);
                         ImageEffectController.instance.invert = !ImageEffectController.instance.invert;
                         Destroy(selectedCard);
+
+                        audSrc.PlayOneShot(placeClip);
                     }
                     else
                     {
@@ -215,6 +229,8 @@ public class CardManager : MonoBehaviour
             mp.Value -= addCardMPCost;
             AddCard(addCardArea);
         }
+
+        prevHoverIndex = hoveredIndex;
     }
 
     void OnDrawGizmos()
