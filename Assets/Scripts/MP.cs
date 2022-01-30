@@ -25,8 +25,8 @@ public class MP : MonoBehaviour
     void Update()
     {
         value += (regenRate + regenBoost) * Time.deltaTime;
-        if(regenBoost < 0.0f) regenBoost += Time.deltaTime;
-        else if(regenBoost > 0.0f) regenBoost -= Time.deltaTime;
+        if(regenBoost < 0.0f) regenBoost += Time.deltaTime / 2.0f;
+        else if(regenBoost > 0.0f) regenBoost -= Time.deltaTime / 2.0f;
         if(value > max) value = max;
         radialMask.alphaCutoff = value/max;
         valueText.text = Mathf.FloorToInt(value).ToString() + "/" + Mathf.FloorToInt(max).ToString();

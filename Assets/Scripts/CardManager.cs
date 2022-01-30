@@ -85,8 +85,8 @@ public class CardManager : MonoBehaviour
     {
         float lerp = lerpFactor * Time.deltaTime;
 
-        //Displaying Add Card Option when cards are quite less
-        addCardArea.SetActive(transform.childCount <= 3);
+        //Displaying Add Card Option when cards are less than or equal to 4
+        addCardArea.SetActive(transform.childCount <= 4);
 
         //Processing Unselected Cards
         int hoveredIndex = GetHoveredIndex();

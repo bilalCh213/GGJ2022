@@ -58,7 +58,7 @@ public class Card : MonoBehaviour
                 mp.Value += properties[propertyIndex].mpCost;
                 break;
                 case 2: //MP regen. gets boosted temporarily!
-                mp.regenBoost += 5.0f;
+                mp.regenBoost += 8.0f;
                 break;
                 case 3: //2 cards will be added to your hand.
                 CardManager.instance.AddCard();
@@ -89,7 +89,7 @@ public class Card : MonoBehaviour
                 mp.Value -= properties[propertyIndex].mpCost;
                 break;
                 case 2: //Temporary MP degeneration!
-                mp.regenBoost -= 5.0f;
+                mp.regenBoost -= 8.0f;
                 break;
                 case 3: //2 cards will be removed from your hand.
                 CardManager.instance.RemoveRandomCard();

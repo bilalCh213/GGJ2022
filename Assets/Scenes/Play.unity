@@ -534,6 +534,9 @@ MonoBehaviour:
   max: 60
   bar: {fileID: 1643937730}
   destroyOnZero: 1
+  unitADestroyClip: {fileID: 0}
+  unitBDestroyClip: {fileID: 0}
+  destroyParticles: {fileID: 0}
 --- !u!1 &141474008
 GameObject:
   m_ObjectHideFlags: 0
@@ -4244,9 +4247,9 @@ MonoBehaviour:
   spawnObjects:
   - {fileID: 6719148424618451414, guid: 85bc25091d821044980fe61e705afaf0, type: 3}
   minDelay: 2
-  maxDelay: 4
-  minSpawnPosition: {x: -2, y: 1.7}
-  maxSpawnPosition: {x: -1.2, y: -2.7}
+  maxDelay: 6
+  minSpawnPosition: {x: -1.6, y: 2.1}
+  maxSpawnPosition: {x: -1.35, y: -2.1}
   objectTag: B
   targetTag: BaseA
   flipX: 0
@@ -4849,6 +4852,9 @@ MonoBehaviour:
   max: 60
   bar: {fileID: 332728148}
   destroyOnZero: 1
+  unitADestroyClip: {fileID: 0}
+  unitBDestroyClip: {fileID: 0}
+  destroyParticles: {fileID: 0}
 --- !u!1 &1426700962
 GameObject:
   m_ObjectHideFlags: 0
@@ -5689,8 +5695,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e6ed826b671535438e1dc2e3862474f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  max: 80
-  regenRate: 2.5
+  max: 100
+  regenRate: 4
   radialMask: {fileID: 641160222}
   valueText: {fileID: 367163177}
   regenBoost: 0

@@ -88,6 +88,7 @@ public class GameManager : MonoBehaviour
         startAudSrc.PlayOneShot(startClip);
         audSrc = GetComponent<AudioSource>();
         audSrc.volume = 0.0f;
+        gameTime = 0.0f;
     }
 
     void Update()
@@ -97,7 +98,7 @@ public class GameManager : MonoBehaviour
             if(baseB == null)
             {
                 Start.clip = winClip;
-                Start.firstText = "You win!";
+                Start.firstText = "You win!\nTime: " + gameTimeText.text;
                 Start.secondText = "Click to play again";
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
@@ -135,7 +136,7 @@ public class GameManager : MonoBehaviour
             Vector3 direction = (target.transform.position - unitTr.position).normalized;
             float distance = Vector3.Distance(unitTr.position, target.transform.position);
 
-            float targetDistance = 1.0f;
+            float targetDistance = 0.5f;
             float springStrength = distance - targetDistance;
             intention += direction * springStrength;
         }
@@ -147,9 +148,9 @@ public class GameManager : MonoBehaviour
             Vector3 direction = (unitA.transform.GetChild(i).position - unitTr.position).normalized;
             float distance = Vector3.Distance(unitTr.position, unitA.transform.GetChild(i).position);
 
-            float targetDistance = 1.0f;
+            float targetDistance = (isA ? 2.0f : 1.0f);
             float springStrength = distance - targetDistance;
-            intention += direction * springStrength * (isA ? -0.75f : 1.0f);
+            intention += direction * springStrength * (isA ? -1.0f : 1.0f);
         }
 
         for(int i = 0; i < unitB.transform.childCount; i++)
@@ -159,9 +160,9 @@ public class GameManager : MonoBehaviour
             Vector3 direction = (unitB.transform.GetChild(i).position - unitTr.position).normalized;
             float distance = Vector3.Distance(unitTr.position, unitB.transform.GetChild(i).position);
 
-            float targetDistance = 1.0f;
+            float targetDistance = (isA ? 0.5f : 1.0f);
             float springStrength = distance - targetDistance;
-            intention += direction * springStrength * (isA ? 1.0f : -0.75f);
+            intention += direction * springStrength * (isA ? 1.0f : -1.0f);
         }
 
         if(intention.magnitude < 0.5f)

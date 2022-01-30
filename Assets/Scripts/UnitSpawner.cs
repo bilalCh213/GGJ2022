@@ -13,7 +13,7 @@ public class UnitSpawner : Spawner
 
     override protected void ModifySpawnedObject(GameObject obj)
     {
-        gameObject.tag = objectTag;
+        obj.tag = objectTag;
         Unit unit = obj.GetComponent<Unit>();
         if(unit != null)
         {

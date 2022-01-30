@@ -11,6 +11,7 @@ public class Health : MonoBehaviour
     [Space]
     [SerializeField] private AudioClip unitADestroyClip;
     [SerializeField] private AudioClip unitBDestroyClip;
+    [SerializeField] private GameObject destroyParticles;
 
     private float current = 1.0f;
 
@@ -25,8 +26,8 @@ public class Health : MonoBehaviour
 
         if(destroyOnZero && current <= 0)
         {
-            if(tag == "A") Camera.main.GetComponent<AudioSource>().PlayOneShot(unitADestroyClip);
-            if(tag == "B") Camera.main.GetComponent<AudioSource>().PlayOneShot(unitBDestroyClip);
+            if(tag == "A") { Instantiate(destroyParticles, transform.position, Quaternion.identity); Camera.main.GetComponent<AudioSource>().PlayOneShot(unitADestroyClip); }
+            if(tag == "B") { Instantiate(destroyParticles, transform.position, Quaternion.identity); Camera.main.GetComponent<AudioSource>().PlayOneShot(unitBDestroyClip); }
             if(gameObject != bar.gameObject) Destroy(bar.gameObject);
             Destroy(gameObject);
         }
